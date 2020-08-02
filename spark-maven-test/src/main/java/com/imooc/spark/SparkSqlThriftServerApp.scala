@@ -12,7 +12,7 @@ object SparkSqlThriftServerApp {
     Class.forName("org.apache.hive.jdbc.HiveDriver")
 
     // 连接 spark的 thriftServer
-    val connection = DriverManager.getConnection("jdbc:hive2://192.168.136.130:10000","hadoop","hadoop")
+    val connection = DriverManager.getConnection("jdbc:hive2://192.168.240.138:10000","hadoop","hadoop")
 
     // 操作sql
     val pre = connection.prepareStatement(" select empno,ename,job from emp")
