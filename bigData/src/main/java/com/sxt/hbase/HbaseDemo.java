@@ -8,6 +8,7 @@ import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
 import java.io.InterruptedIOException;
+import java.util.Iterator;
 
 /**
  * 注： 需要 配置 域名解析 -- ip  到 hosts 文件中
@@ -31,7 +32,7 @@ public class HbaseDemo {
     static {
         try {
         // 客户端只需连接Zookeeper即可
-        configuration.set("hbase.zookeeper.quorum","192.168.240.139");
+        configuration.set("hbase.zookeeper.quorum","192.168.136.130");
         admin = new HBaseAdmin(configuration);
 
         hTable = new HTable(configuration,tableName);
@@ -94,9 +95,15 @@ public class HbaseDemo {
         System.out.println(Bytes.toString(CellUtil.cloneValue(cell3)));
     }
 
-    public static void scanTable(){
+    public static void scanTable() throws IOException {
         Scan scan = new Scan();
+        ResultScanner scanner = hTable.getScanner(scan);
+//        Iterator<Result> it = scanner.iterator();
 
+        for (Result r = scanner.next(); r != null; r = scanner.next()) {
+            // process result...
+//            r.getColumnCells()
+        }
     }
 
     public static void close() throws IOException {

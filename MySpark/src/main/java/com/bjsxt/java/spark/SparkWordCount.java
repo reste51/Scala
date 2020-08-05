@@ -23,6 +23,8 @@ public class SparkWordCount {
         SparkConf conf = new SparkConf();
         conf.setMaster("local");
         conf.setAppName("wc");
+
+
         JavaSparkContext sc = new JavaSparkContext(conf);
         JavaRDD<String> lines = sc.textFile("./data/words");
         JavaRDD<String> words = lines.flatMap(new FlatMapFunction<String, String>() {
