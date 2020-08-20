@@ -89,7 +89,30 @@ object PartitionOperator {
      So the first item in the first partition gets index 0
      */
     val indexRdd:RDD[((String,String),Long)] = zipRetRdd.zipWithIndex()
-    indexRdd.foreach(println)
+//    indexRdd.foreach(println)
+
+    /*
+      * Group the values for each key in the RDD into a single sequence.
+      * result : (aaa,CompactBuffer(10, 101, 110))  (aaa111,CompactBuffer(10))
+      */
+//    sc.parallelize(List[(String,Int)](("aaa",10),("aaa",101),("aaa",110),("aaa111",10))).groupByKey().foreach(println)
+
+    /*
+      action 算子返回一个结果集
+     */
+//    val reduceRet = sc.parallelize(List[Int](10,20,10,10)).reduce((one,two)=>one+1)
+//    println(reduceRet)
+
+    val rdd3 = sc.parallelize(List[(String,Int)](("aaa",10),("aaa",101),("aaa",110),("aaa111",10)))
+    /*
+      Count the number of elements for each key, collecting the results to a local Map
+      result : (aaa:3,aaa111:1)
+     */
+    rdd3.countByKey().foreach(println)
+
+
+
+
 
     sc.stop()
 
