@@ -1,8 +1,8 @@
-package com.bjsxt.scala.spark
+package com.bjsxt.scala.spark.core
 
 import org.apache.spark.rdd.RDD
-import org.apache.spark.storage.StorageLevel
 import org.apache.spark.{SparkConf, SparkContext}
+;
 
 /**
   * 持久化算子操作

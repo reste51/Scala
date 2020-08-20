@@ -1,9 +1,8 @@
-package com.bjsxt.scala.spark
+package com.bjsxt.scala.spark.core
 
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
-
-import scala.collection.mutable.ListBuffer
+;
 
 object PartitionOperator {
   def main(args: Array[String]): Unit = {

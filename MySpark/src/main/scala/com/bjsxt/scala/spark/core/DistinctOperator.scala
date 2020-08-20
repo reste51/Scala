@@ -1,7 +1,8 @@
-package com.bjsxt.scala.spark
+package com.bjsxt.scala.spark.core
 
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
+;
 
 /**
   * distinct 算子的demo
