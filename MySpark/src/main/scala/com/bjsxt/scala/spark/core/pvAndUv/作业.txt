@@ -1,0 +1,9 @@
+1.pv pageview ( 同一个人访问多次_不去重)
+2.uv unique vistor(一个人访问多次，去重计数为1)
+3.每个网址 访问量top3地区 和对应的人数
+	www.baidu.com 北京 2000
+	               河北 1800
+				   辽宁 1000
+	www.taobao.com....
+
+
