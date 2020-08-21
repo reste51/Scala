@@ -10,6 +10,9 @@ import org.apache.spark.{SparkConf, SparkContext}
                      河北 1800
                辽宁 1000
 	www.taobao.com....
+
+  map => 是 1 对1 的转化
+  flatMap => 打散 扁平化到每个节点
   */
 object work1 {
   def main(args: Array[String]): Unit = {
@@ -46,6 +49,8 @@ object work1 {
 
     /***********************PV 的操作****************************/
     /*
+    去重 ip+website
+
        map => [],[],[] => (webSite_ip,1)  => distinct (去重 ip+website)
             => map (website,1)
             => reduceByKey(根据相同的网站累计数) => sortBy (value )
