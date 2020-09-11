@@ -22,6 +22,10 @@ object First {
     df.printSchema()
     df.show()
 
+    // 隐士转化, 导入 sparkSession的隐式定义函数
+    import sparkSession.implicits._
+    df.select($"name".equalTo("zhangsan"),$"age").show(100)
+
     // 注册视图 _使用sql查询
 //    df.registerTempTable("first")  // 1.6 的语法
     df.createOrReplaceTempView("first") // 不能跨session 访问该表
