@@ -8,11 +8,13 @@ import org.apache.spark.sql.{SaveMode, SparkSession}
 
   hive-site.xml 修正
   hive.metastore.uris：sparksql 连接到这里，这里是hive的metastore，用于获取hive表; 另一个是禁用metastore的版本检测
+
   4.开启hive的metastore元数据库
   spark sql想要使用hive的表，还需要hive开启metastore
   hive --service metastore &
   启动后放后台就可以，供spark sql使用
 
+  注： 使用时需 使用 spark-submit 提交 standalone 模式， 不用local会报错
   */
 object SparkOnHive01 {
 
