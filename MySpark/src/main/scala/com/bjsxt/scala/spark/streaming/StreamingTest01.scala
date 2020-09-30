@@ -21,10 +21,14 @@ object StreamingTest01 {
     val ssc = new StreamingContext(sc,Durations.seconds(5))
     val inputDataBatch: ReceiverInputDStream[String] = ssc.socketTextStream("192.168.136.131",9999)
 
-    inputDataBatch.print()
+    // wordCount 计算模式, DStream 也可以使用RDD的算子，做了一层封装
+    val wordCount = inputDataBatch.flatMap(_.split(" ")).
+      map(word=>(word,1)).reduceByKey(_+_)
+    // output operator可以触发 transformation算子
+    wordCount.print()
 
-    // 等待停止
-    ssc.awaitTermination()
+    ssc.start()   //开启计算
+    ssc.awaitTermination()  // 等待计算完成
     ssc.stop(true)
   }
 }
