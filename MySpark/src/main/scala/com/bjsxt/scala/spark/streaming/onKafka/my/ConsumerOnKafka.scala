@@ -20,10 +20,10 @@ object ConsumerOnKafka {
     val ssc = new StreamingContext(conf,Durations.seconds(5))
 
     val kafkaParams = Map[String, Object](
-      "bootstrap.servers" -> "192.168.136.131:9092,192.168.136.130:9092",
+      "bootstrap.servers" -> "hadoop001:9092,nodeM:9092",
       "key.deserializer" -> classOf[StringDeserializer],
       "value.deserializer" -> classOf[StringDeserializer],
-//      "group.id" -> "console-consumer-31586",
+      "group.id" -> "use_a_separate_group_id_for_each_stream",
       "auto.offset.reset" -> "latest",
       "enable.auto.commit" -> (false: java.lang.Boolean)
     )

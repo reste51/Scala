@@ -4,14 +4,15 @@ import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.dstream.{DStream, InputDStream}
-import org.apache.spark.streaming.kafka010.{CanCommitOffsets, HasOffsetRanges, KafkaUtils, OffsetRange}
-import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
 import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
+import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
+import org.apache.spark.streaming.kafka010.{CanCommitOffsets, HasOffsetRanges, KafkaUtils, OffsetRange}
 import org.apache.spark.streaming.{Durations, StreamingContext}
 
 /**
+  * 不能运行 local模式, 在spark-submit standalone模式下运行
   * SparkStreaming2.3版本 读取kafka 中数据 ：
-  *  1.采用了新的消费者api实现，类似于1.6中SparkStreaming 读取 kafka Direct模式。并行度 一样。
+  *  1.采用了新的消费者api实现，类似于1.6中SparkStreaming 读取 kafka Direct模式StringDeserializer。并行度 一样。
   *  2.因为采用了新的消费者api实现，所有相对于1.6的Direct模式【simple api实现】 ，api使用上有很大差别。未来这种api有可能继续变化
   *  3.kafka中有两个参数：
   *      heartbeat.interval.ms：这个值代表 kafka集群与消费者之间的心跳间隔时间，kafka 集群确保消费者保持连接的心跳通信时间间隔。这个时间默认是3s.
@@ -43,17 +44,18 @@ import org.apache.spark.streaming.{Durations, StreamingContext}
 object SparkStreamingOnKafkaDirect {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf()
-    conf.setMaster("local")
+    conf.setMaster("local[2]")
     conf.setAppName("SparkStreamingOnKafkaDirect")
     val ssc = new StreamingContext(conf,Durations.seconds(5))
     //设置日志级别
-    ssc.sparkContext.setLogLevel("Error")
+//    ssc.sparkContext.setLogLevel("Error")
 
     val kafkaParams = Map[String, Object](
-      "bootstrap.servers" -> "192.168.240.142:9092,192.168.240.141:9092",
+//      "bootstrap.servers" -> "192.168.136.131:9092,192.168.136.130:9092",
+      "bootstrap.servers" -> "hadoop001:9092,nodeM:9092",
       "key.deserializer" -> classOf[StringDeserializer],
       "value.deserializer" -> classOf[StringDeserializer],
-      "group.id" -> "MyGroupId",//
+      "group.id" -> "consumer-group-001",//
 
       /**
         * 当没有初始的offset，或者当前的offset不存在，如何处理数据
@@ -69,7 +71,7 @@ object SparkStreamingOnKafkaDirect {
       "enable.auto.commit" -> (false: java.lang.Boolean)//默认是true
     )
 
-    val topics = Array("kafka-scala")
+    val topics = Array("quickstart-events")
     val stream: InputDStream[ConsumerRecord[String, String]] = KafkaUtils.createDirectStream[String, String](
       ssc,
       PreferConsistent,//

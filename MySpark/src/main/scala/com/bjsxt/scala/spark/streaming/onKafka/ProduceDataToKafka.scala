@@ -13,7 +13,8 @@ import scala.util.Random
 object ProduceDataToKafka {
   def main(args: Array[String]): Unit = {
     val props = new Properties()
-    props.put("bootstrap.servers", "192.168.240.142:9092,192.168.240.141:9092")
+    props.put("bootstrap.servers", "hadoop001:9092,nodeM:9092")
+//    props.put("bootstrap.servers", "localhost:9092")
     props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
     props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
 
@@ -25,10 +26,11 @@ object ProduceDataToKafka {
       keyFlag +=1
       val content: String = userlogs()
       //参数1: topic. 2：record的key  3:record的value
-      producer.send(new ProducerRecord[String, String]("kafka-scala", s"key-$keyFlag", content))
+      producer.send(new ProducerRecord[String, String]("quickstart-events", s"key-$keyFlag", content))
       if(0 == counter%200){
         counter = 0
         Thread.sleep(2000)
+//        producer.flush()
       }
     }
 
