@@ -1,10 +1,10 @@
 package com.bjsxt.scala.spark.streaming.onKafka.my
 
 import org.apache.kafka.common.serialization.StringDeserializer
-import org.apache.spark.SparkConf
+import org.apache.spark.{SparkConf, TaskContext}
 import org.apache.spark.streaming.dstream.DStream
 import org.apache.spark.streaming.{Durations, StreamingContext}
-import org.apache.spark.streaming.kafka010.KafkaUtils
+import org.apache.spark.streaming.kafka010.{HasOffsetRanges, KafkaUtils, OffsetRange}
 import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
 import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
 
@@ -37,6 +37,15 @@ object ConsumerOnKafka {
 
     val tupleDstram: DStream[(String, String)] = stream.map(record => (record.key, record.value))
     tupleDstram.print()
+
+    // Dstream --> rdd --> partition
+    stream.foreachRDD { rdd =>
+      val offsetRanges = rdd.asInstanceOf[HasOffsetRanges].offsetRanges
+      rdd.foreachPartition { iter =>
+        val o: OffsetRange = offsetRanges(TaskContext.get.partitionId)
+        println(s"${o.topic} ${o.partition} ${o.fromOffset} ${o.untilOffset}")
+      }
+    }
 
     ssc.start()
     ssc.awaitTermination()
