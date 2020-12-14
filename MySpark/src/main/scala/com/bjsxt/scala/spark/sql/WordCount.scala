@@ -1,3 +1,5 @@
+package com.bjsxt.scala.spark.sql
+
 import org.apache.spark.{SparkConf, SparkContext}
 
 /**
