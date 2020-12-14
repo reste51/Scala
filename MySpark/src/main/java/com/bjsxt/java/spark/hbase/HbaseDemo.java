@@ -1,4 +1,4 @@
-package com.sxt.hbase;
+package com.bjsxt.java.spark.hbase;
 
 
 import org.apache.hadoop.conf.Configuration;
@@ -7,8 +7,6 @@ import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 
 import java.io.IOException;
-import java.io.InterruptedIOException;
-import java.util.Iterator;
 
 /**
  * 注： 需要 配置 域名解析 -- ip  到 hosts 文件中
