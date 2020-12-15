@@ -13,7 +13,7 @@ object DataFrameTest {
     // 注： 设置了hadoop-home 之后默认会 查找 hdfs 中的文件,读取本地文件路径:  需要使用 file:///E:/xxxx/xxx
     System.setProperty("hadoop.home.dir", "D:\\program_files\\winutils\\winutils-master\\hadoop-2.6.3");
 
-    val path = "file:///"+  this.getClass.getClassLoader.getResource("people.json").getPath()
+    val path = "file:///"+  this.getClass.getClassLoader.getResource("data/people.json").getPath()
 
     /*
       The entry point into all functionality in Spark is the SparkSession class. To create a basic SparkSession, just use SparkSession.builder():

@@ -2,21 +2,30 @@
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 
 <configuration>
-  <!--
-    开启hive的metastore元数据库
-    spark sql想要使用hive的表，还需要hive开启metastore
-
-    hive -service metastore &
-    启动hive元数据服务后放后台就可以，供spark sql使用
-  -->
-  <property>
-    <name>hive.metastore.uris</name>
-    <value>thrift://192.168.136.130:9083</value>
-  </property>
+    <property>
+        <name>javax.jdo.option.ConnectionURL</name>
+        <value>jdbc:mysql://192.168.136.130:3306/sxt_meta?createDatabaseIfNotExist=true</value>
+    </property>
 
     <property>
-        <name>hive.metastore.schema.verification</name>
-        <value>false</value>
+        <name>javax.jdo.option.ConnectionDriverName</name>
+        <value>com.mysql.jdbc.Driver</value>
+    </property>
+
+    <property>
+        <name>javax.jdo.option.ConnectionUserName</name>
+        <value>root</value>
+    </property>
+
+    <property>
+        <name>javax.jdo.option.ConnectionPassword</name>
+        <value>root</value>
+    </property>
+
+    <!-- set mestore dir -->
+    <property>
+        <name>hive.metastore.warehouse.dir</name>
+        <value>hdfs://192.168.136.130:8020/user/hive_sxt/warehouse</value>
     </property>
 
 </configuration>
