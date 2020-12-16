@@ -1,6 +1,6 @@
 package com.bjsxt.scala.spark.hive.learn
 
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.{Row, SparkSession}
 
 /**
   * Spark 访问 Hive的元数据,  创建及 访问表  DDL DML等操作
@@ -29,7 +29,9 @@ object Hive01 {
       .enableHiveSupport()
       .getOrCreate()
 
+    import spark.implicits._
     import spark.sql
+
     sql("use example")
     sql(" create table if not exists src(key int, value string)")
     // 加载数据
@@ -37,5 +39,24 @@ object Hive01 {
 
     // hiveQL
     sql("select * from src").show()
+
+    // Aggregation queries are also supported.
+    sql("select count(*) as c from src").show()
+
+    // The results of SQL queries are themselves DataFrames and support all normal functions.
+    val sqlDf = sql("select key,value from src where key < 10 order by key ")
+    // The items in DaraFrames are of type Row, which allows you to access each column by ordinal.
+    sqlDf.map({
+      case Row(key:Int,value:String) => s"key: $key, value: $value"
+    }).show()
+
+    println("*"*100)
+    // create temp view
+    spark.createDataFrame((1 to 100).map(i => Record(i,s"val_$i"))).createOrReplaceTempView("records")
+
+    // join DataFrame data with data stored in Hive
+    sql("select * from records r join src s on r.key = s.key").show()
+
+
   }
 }
